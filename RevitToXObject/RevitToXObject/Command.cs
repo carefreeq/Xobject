@@ -25,7 +25,7 @@ namespace RevitToXObject
         {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Title = "场景导出到";
-            sfd.Filter = "xr file(*.xrobj)|*.xrobj";
+            sfd.Filter = "file(*" + XObject.XData.Extension + ")|*" + XObject.XData.Extension + "";
             sfd.FilterIndex = 2;
             sfd.RestoreDirectory = true;
             if (sfd.ShowDialog() == true)

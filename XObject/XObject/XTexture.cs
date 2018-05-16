@@ -9,7 +9,7 @@ namespace XObject
     /// 贴图纹理数据
     /// </summary>
     [Serializable]
-    public class XRTexture : XObject
+    public class XTexture : XObject
     {
         public byte[] Data { get; set; }
     }

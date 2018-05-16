@@ -7,6 +7,13 @@ using System.Text;
 
 namespace XObject
 {
+    public enum FileType
+    {
+        D3Max,
+        Maya,
+        Revit,
+        Unity,
+    }
     /// <summary>
     /// XObject文件类
     /// </summary>
@@ -18,6 +25,14 @@ namespace XObject
         /// </summary>
         public const string Extension = ".xo";
         /// <summary>
+        /// 名字
+        /// </summary>
+        public string Name { get; private set; }
+        /// <summary>
+        /// 文件类型
+        /// </summary>
+        public FileType Type { get; private set; }
+        /// <summary>
         /// 元素们
         /// </summary>
         public List<XElement> Objects { get; set; }
@@ -28,12 +43,14 @@ namespace XObject
         /// <summary>
         /// 贴图们
         /// </summary>
-        public List<XRTexture> Textures { get; set; }
-        public XData()
+        public List<XTexture> Textures { get; set; }
+        public XData(string name, FileType type)
         {
+            Name = name;
+            Type = type;
             Objects = new List<XElement>();
             Materials = new List<XMaterial>();
-            Textures = new List<XRTexture>();
+            Textures = new List<XTexture>();
         }
         /// <summary>
         /// 保存到指定路径

@@ -1,0 +1,37 @@
+# =============== #
+# Unity generated #
+# =============== #
+Temp/
+Library/
+Assets/StreamingAssets/Assets/
+Assets/StreamingAssets/SkyBox/
+Assets/StreamingAssets/Datas/
+Assets/StreamingAssets/Data/
+Assets/StreamingAssets/Assets.meta
+Assets/StreamingAssets/Data.meta
+Assets/StreamingAssets/XRmakerLog.txt
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+ExportedObj/
+obj/
+*.svd
+*.userprefs
+/*.csproj
+*.pidb
+*.suo
+/*.sln
+*.user
+*.unityproj
+*.booproj
+
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

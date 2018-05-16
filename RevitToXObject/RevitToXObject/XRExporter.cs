@@ -40,7 +40,7 @@ namespace RevitToXObject
             FilePath = path;
             Documents = new Stack<Document>();
             Transforms = new Stack<Transform>();
-            XData = new XData();
+            XData = new XData(Path.GetFileNameWithoutExtension(path), FileType.Revit);
             EnableLog = false;
         }
 
@@ -260,7 +260,7 @@ namespace RevitToXObject
             }
         }
 
-        private XMap ReadTexture(AssetProperty asset)
+        private XMapping ReadTexture(AssetProperty asset)
         {
             switch (asset.Type)
             {
@@ -281,7 +281,7 @@ namespace RevitToXObject
                         if (la.Count > 0)
                         {
                             Asset a = la[0] as Asset;
-                            XMap m = new XMap();
+                            XMapping m = new XMapping();
                             m.Type = t;
                             XVec2 s = new XVec2();
                             XVec2 o = new XVec2();
@@ -306,7 +306,7 @@ namespace RevitToXObject
                                             if (File.Exists(p))
                                                 using (FileStream fs = new FileStream(p, FileMode.Open, FileAccess.Read))
                                                 {
-                                                    XRTexture tex = new XRTexture();
+                                                    XTexture tex = new XTexture();
                                                     tex.Name = fs.Name;
                                                     tex.Data = new byte[fs.Length];
                                                     fs.Read(tex.Data, 0, (int)fs.Length);
@@ -381,7 +381,7 @@ namespace RevitToXObject
                             {
                                 if (EnableLog)
                                     LogMaterial(a[i], log);
-                                XMap t = ReadTexture(a[i]);
+                                XMapping t = ReadTexture(a[i]);
                                 if (t != null)
                                 {
                                     mat.Maps.Add(t);
