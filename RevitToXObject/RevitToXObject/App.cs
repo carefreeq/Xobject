@@ -41,8 +41,8 @@ namespace RevitToXObject
 #else
             PushButton btn = rvtRibbonPanel.AddItem(new PushButtonData("Revit To XObject", "Revit to XObject", location, "RevitToXObject.Command")) as PushButton;
 #endif
-            //btn.Image = GetEmbeddedImage("RevitToXObject.Resources.XObject_16.png");
-            //btn.LargeImage = GetEmbeddedImage("RevitToXObject.Resources.XObject_32.png");
+            btn.Image = GetEmbeddedImage("RevitToXObject.Resources.XObject_16.png");
+            btn.LargeImage = GetEmbeddedImage("RevitToXObject.Resources.XObject_32.png");
             UIControlledApplication = app;
         }
         static BitmapSource GetEmbeddedImage(string name)

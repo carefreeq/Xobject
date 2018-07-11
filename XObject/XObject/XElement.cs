@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace XObject
@@ -35,6 +34,7 @@ namespace XObject
         {
             Name = "XRobject";
             Meshs = new List<XMesh>();
+            Children = new List<XElement>();
             Position = XVec3.zero;
             Euler = XVec3.zero;
             Scale = XVec3.one;

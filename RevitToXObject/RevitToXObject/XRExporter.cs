@@ -28,6 +28,7 @@ namespace RevitToXObject
         private ElementId id;
         private int matid = 0;
         private string localMap = @"C:\Program Files (x86)\Common Files\Autodesk Shared\Materials\Textures";
+        private string localMap1 = @"1\Mats";
         private Dictionary<int, int> matLink = new Dictionary<int, int>();
         private Dictionary<string, int> texLink = new Dictionary<string, int>();
         public static bool EnableLog { get; set; }
@@ -41,7 +42,7 @@ namespace RevitToXObject
             Documents = new Stack<Document>();
             Transforms = new Stack<Transform>();
             XData = new XData(Path.GetFileNameWithoutExtension(path), FileType.Revit);
-            EnableLog = false;
+            EnableLog = true;
         }
 
         public bool Start()
@@ -71,7 +72,7 @@ namespace RevitToXObject
                     s.Append(l + "\n");
                 File.WriteAllText("D://revitlog.txt", s.ToString());
             }
-            TaskDialog.Show("保存成功", "成功导出为XR文件\n元素:" + XData.Objects.Count + "个\n多边形:" + meshLog.Count + " 个\n材质:" + matLog.Count + "个\n贴图:" + XData.Textures.Count + "个");
+            TaskDialog.Show("保存成功", "成功导出为XObject文件\n元素:" + XData.Objects.Count + "个\n多边形:" + meshLog.Count + " 个\n材质:" + matLog.Count + "个\n贴图:" + XData.Textures.Count + "个");
         }
 
         public bool IsCanceled()
@@ -145,84 +146,68 @@ namespace RevitToXObject
         {
             if (asset == null)
                 return;
-            if (EnableLog)
-                log.Append(t + "Asset.Type:" + asset.Type.ToString() + "::" + asset.Name + "=");
+            log.Append(t + "Asset.Type:" + asset.Type.ToString() + "::" + asset.Name + "=");
             switch (asset.Type)
             {
                 case AssetPropertyType.APT_Asset:
                     Asset a = asset as Asset;
-                    if (EnableLog)
-                        log.Append("Asset,Size:" + a.Size + "\n");
+                    log.Append("Asset,Size:" + a.Size + "\n");
                     for (int i = 0; i < a.Size; i++)
                         LogMaterial(a[i], log, t + "\t");
                     break;
                 case AssetPropertyType.APT_Boolean:
                     AssetPropertyBoolean ab = asset as AssetPropertyBoolean;
-                    if (EnableLog)
-                        log.Append(ab.Value + "\n");
+                    log.Append(ab.Value + "\n");
                     break;
                 case AssetPropertyType.APT_Distance:
                     AssetPropertyDistance ad = asset as AssetPropertyDistance;
-                    if (EnableLog)
-                        log.Append(ad.Value + "\n");
+                    log.Append(ad.Value + "\n");
                     break;
                 case AssetPropertyType.APT_Double:
                     AssetPropertyDouble ado = asset as AssetPropertyDouble;
-                    if (EnableLog)
-                        log.Append(ado.Value + "\n");
+                    log.Append(ado.Value + "\n");
                     break;
                 case AssetPropertyType.APT_Double44:
                     break;
                 case AssetPropertyType.APT_DoubleArray2d:
                     AssetPropertyDoubleArray2d ado2 = asset as AssetPropertyDoubleArray2d;
-                    if (EnableLog)
-                        log.Append(ado2.Value.get_Item(0) + "," + ado2.Value.get_Item(1) + "\n");
+                    log.Append(ado2.Value.get_Item(0) + "," + ado2.Value.get_Item(1) + "\n");
                     break;
                 case AssetPropertyType.APT_DoubleArray3d:
                     AssetPropertyDoubleArray3d ado3 = asset as AssetPropertyDoubleArray3d;
-                    if (EnableLog)
-                        log.Append(ado3.Value.get_Item(0) + "," + ado3.Value.get_Item(1) + "," + ado3.Value.get_Item(2) + "\n");
+                    log.Append(ado3.Value.get_Item(0) + "," + ado3.Value.get_Item(1) + "," + ado3.Value.get_Item(2) + "\n");
                     break;
                 case AssetPropertyType.APT_DoubleArray4d:
                     AssetPropertyDoubleArray4d ado4 = asset as AssetPropertyDoubleArray4d;
-                    if (EnableLog)
-                        log.Append(ado4.Value.get_Item(0) + "," + ado4.Value.get_Item(1) + "," + ado4.Value.get_Item(2) + "," + ado4.Value.get_Item(3) + "\n");
+                    log.Append(ado4.Value.get_Item(0) + "," + ado4.Value.get_Item(1) + "," + ado4.Value.get_Item(2) + "," + ado4.Value.get_Item(3) + "\n");
                     break;
                 case AssetPropertyType.APT_Enum:
                     AssetPropertyEnum ae = asset as AssetPropertyEnum;
-                    if (EnableLog)
-                        log.Append(ae.Value + "\n");
+                    log.Append(ae.Value + "\n");
                     break;
                 case AssetPropertyType.APT_Float:
                     AssetPropertyFloat af = asset as AssetPropertyFloat;
-                    if (EnableLog)
-                        log.Append(af.Value + "\n");
+                    log.Append(af.Value + "\n");
                     break;
                 case AssetPropertyType.APT_FloatArray:
                     IList<float> lf = (asset as AssetPropertyFloatArray).GetValue();
-                    if (EnableLog)
-                    {
-                        foreach (float f in lf)
-                            log.Append(f + ",");
-                        log.Append("\n");
-                    }
+                    foreach (float f in lf)
+                        log.Append(f + ",");
+                    log.Append("\n");
                     break;
                 case AssetPropertyType.APT_Int64:
                     AssetPropertyInt64 ai6 = asset as AssetPropertyInt64;
-                    if (EnableLog)
-                        log.Append(ai6.Value + "\n");
+                    log.Append(ai6.Value + "\n");
                     break;
                 case AssetPropertyType.APT_Integer:
                     AssetPropertyInteger ai = asset as AssetPropertyInteger;
-                    if (EnableLog)
-                        log.Append(ai.Value + "\n");
+                    log.Append(ai.Value + "\n");
                     break;
                 case AssetPropertyType.APT_List:
                     break;
                 case AssetPropertyType.APT_Properties:
                     AssetProperties ap = asset as AssetProperties;
-                    if (EnableLog)
-                        log.Append("AssetProperties,Count:" + ap.Size + "\n");
+                    log.Append("AssetProperties,Count:" + ap.Size + "\n");
                     for (int i = 0; i < ap.Size; i++)
                         LogMaterial(ap[i], log, t + "\t");
                     break;
@@ -230,32 +215,26 @@ namespace RevitToXObject
                     break;
                 case AssetPropertyType.APT_String:
                     AssetPropertyString _as = asset as AssetPropertyString;
-                    if (EnableLog)
-                        log.Append(_as.Value + "\n");
+                    log.Append(_as.Value + "\n");
                     break;
                 case AssetPropertyType.APT_Time:
                     AssetPropertyTime at = asset as AssetPropertyTime;
-                    if (EnableLog)
-                        log.Append(at.Value + "\n");
+                    log.Append(at.Value + "\n");
                     break;
                 case AssetPropertyType.APT_UInt64:
                     AssetPropertyUInt64 aiu6 = asset as AssetPropertyUInt64;
-                    if (EnableLog)
-                        log.Append(aiu6.Value + "\n");
+                    log.Append(aiu6.Value + "\n");
                     break;
                 case AssetPropertyType.APT_Unknown:
-                    if (EnableLog)
-                        log.Append("\n");
+                    log.Append("\n");
                     break;
                 default:
-                    if (EnableLog)
-                        log.Append("\n");
+                    log.Append("\n");
                     break;
             }
             foreach (Asset _a in asset.GetAllConnectedProperties())
             {
-                if (EnableLog)
-                    log.Append(t + "GetAllConnectedProperties:\n");
+                log.Append(t + "GetAllConnectedProperties:\n");
                 LogMaterial(_a, log, t + "\t");
             }
         }
@@ -295,7 +274,10 @@ namespace RevitToXObject
                                         string p = aps.Value.Split('|')[0];
                                         if (!p.Contains(":"))
                                         {
-                                            p = Path.Combine(localMap, p);
+                                            if (p.Contains("\\"))
+                                                p = Path.Combine(localMap, p);
+                                            else
+                                                p = Path.Combine(localMap, localMap1, p);
                                         }
                                         if (texLink.ContainsKey(p))
                                         {
@@ -455,6 +437,11 @@ namespace RevitToXObject
         private void ExportLight()
         {
 
+        }
+
+        public void OnDaylightPortal(DaylightPortalNode node)
+        {
+            //throw new NotImplementedException();
         }
     }
 }

@@ -226,28 +226,24 @@ namespace QQ
                         m.SetUVs(0, uvs);
                         m.SetTriangles(xm.Triangles, 0);
                         m.RecalculateNormals();
+                        GameObject _g = g;
+                        if (xms.Count > 1)
+                        {
+                            _g = new GameObject(xo.Name + "_" + _i);
+                            _g.transform.SetParent(g.transform, false);
+                        }
                         switch (t)
                         {
                             case FileType.D3Max:
                             case FileType.Maya:
                             case FileType.Unity:
-                                MeshFilter umf = g.GetComponent<MeshFilter>();
-                                if (!umf) umf = g.AddComponent<MeshFilter>();
-                                umf.mesh = m;
-                                MeshRenderer umr = g.GetComponent<MeshRenderer>();
-                                if (!umr) umr = g.AddComponent<MeshRenderer>();
-                                umr.material = mats[xm.MaterialID];
-                                break;
                             case FileType.Revit:
-                                GameObject _g = new GameObject(xm.Name);
-                                _g.transform.SetParent(g.transform);
-                                _g.transform.localPosition = Vector3.zero;
-                                _g.transform.localRotation = Quaternion.identity;
-                                _g.transform.localScale = Vector3.one;
-                                MeshFilter rmf = _g.AddComponent<MeshFilter>();
-                                rmf.mesh = m;
-                                MeshRenderer rmr = _g.AddComponent<MeshRenderer>();
-                                rmr.material = mats[xm.MaterialID];
+                                MeshFilter mf = _g.GetComponent<MeshFilter>();
+                                if (!mf) mf = _g.AddComponent<MeshFilter>();
+                                mf.mesh = m;
+                                MeshRenderer mr = _g.GetComponent<MeshRenderer>();
+                                if (!mr) mr = _g.AddComponent<MeshRenderer>();
+                                mr.material = mats[xm.MaterialID];
                                 break;
                         }
                     }
