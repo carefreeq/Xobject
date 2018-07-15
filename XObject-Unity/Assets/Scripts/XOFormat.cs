@@ -176,7 +176,9 @@ namespace QQ
                 }
                 m.Add(_m);
             }
-            CreateGameObject(d.Type, d.Objects, g.transform, m.ToArray());
+            Vector3 min = Vector3.one * float.MaxValue;
+            Vector3 max = Vector3.one * float.MinValue;
+            CreateGameObject(d.Type, d.Objects, g.transform, m.ToArray(),ref min,ref max);
 
             switch (d.Type)
             {
@@ -189,9 +191,12 @@ namespace QQ
                     g.transform.eulerAngles = new Vector3(-90f, 0.0f, 0.0f);
                     break;
             }
+            BoxCollider b = g.AddComponent<BoxCollider>();
+            b.size = max - min;
+            b.center = (max + min) * 0.5f;
             return g;
         }
-        private static void CreateGameObject(FileType t, List<XElement> ele, Transform parent, Material[] mats)
+        private static void CreateGameObject(FileType t, List<XElement> ele, Transform parent, Material[] mats, ref Vector3 min, ref Vector3 max)
         {
             for (int i = 0; i < ele.Count; i++)
             {
@@ -226,6 +231,9 @@ namespace QQ
                         m.SetUVs(0, uvs);
                         m.SetTriangles(xm.Triangles, 0);
                         m.RecalculateNormals();
+                        min = Vector3.Min(min, m.bounds.min + g.transform.localPosition);
+                        max = Vector3.Max(max, m.bounds.max + g.transform.localPosition);
+
                         GameObject _g = g;
                         if (xms.Count > 1)
                         {
@@ -248,7 +256,7 @@ namespace QQ
                         }
                     }
                 }
-                CreateGameObject(t, xo.Children, g.transform, mats);
+                CreateGameObject(t, xo.Children, g.transform, mats, ref min, ref max);
             }
         }
     }
