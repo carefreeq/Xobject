@@ -61,8 +61,8 @@ namespace QQ
             for (int i = 0; i < texs.Count; i++)
             {
                 Texture2D t = texs[i];
-                Texture2D _t = new Texture2D(t.width, t.height, t.format, t.mipmapCount > 1);
-                _t.LoadRawTextureData(t.GetRawTextureData());
+                Texture2D _t = new Texture2D(t.width, t.height);
+                _t.SetPixels(t.GetPixels());
                 XTexture xt = new XTexture();
                 xt.Data = _t.EncodeToPNG();
                 d.Textures.Add(xt);
