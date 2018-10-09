@@ -248,9 +248,11 @@ namespace RevitToXObject
                     switch (asset.Name)
                     {
                         case "generic_diffuse":
+                        case "ceramic_color":
                             t = TextureType.Diffuse;
                             break;
                         case "generic_bump_map":
+                        case "ceramic_bump_map":
                             t = TextureType.Normal;
                             break;
                     }
@@ -274,7 +276,7 @@ namespace RevitToXObject
                                         string p = aps.Value.Split('|')[0];
                                         if (!p.Contains(":"))
                                         {
-                                            if (p.Contains("\\"))
+                                            if (p.Contains("/") || p.Contains("\\"))
                                                 p = Path.Combine(localMap, p);
                                             else
                                                 p = Path.Combine(localMap, localMap1, p);
@@ -286,6 +288,7 @@ namespace RevitToXObject
                                         else
                                         {
                                             if (File.Exists(p))
+                                            {
                                                 using (FileStream fs = new FileStream(p, FileMode.Open, FileAccess.Read))
                                                 {
                                                     XTexture tex = new XTexture();
@@ -296,6 +299,7 @@ namespace RevitToXObject
                                                     texLink.Add(p, m.ID);
                                                     XData.Textures.Add(tex);
                                                 }
+                                            }
                                             else
                                                 return null;
                                         }
